@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+
+#ddev-generated
+## Description: Create a NetX source, key and media type in Drupal that use the mock
+## Usage: netx-mock-seed [source-id]
+## Example: "ddev netx-mock-seed" or "ddev netx-mock-seed mock"
+
+set -eu
+export NETX_MOCK_SOURCE="${1:-mock}"
+drush php:script /var/www/html/.ddev/netx-mock/seed.php

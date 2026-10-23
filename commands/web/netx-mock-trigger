@@ -1,0 +1,27 @@
+#!/usr/bin/env bash
+
+#ddev-generated
+## Description: Make the NetX mock send a webhook to this site
+## Usage: netx-mock-trigger <EVENT> [id]
+## Example: "ddev netx-mock-trigger ASSET_CREATE 101" or "ddev netx-mock-trigger FOLDER_CREATE 6"
+
+set -eu
+if [ $# -lt 1 ]; then
+  echo "Usage: ddev netx-mock-trigger <EVENT> [id]" >&2
+  echo "Events: ASSET_CREATE ASSET_DELETE ASSET_UPDATEATTRIBUTES FOLDER_CREATE USER_CREATE ..." >&2
+  exit 1
+fi
+event="$(echo "$1" | tr '[:lower:]' '[:upper:]')"
+context='{}'
+if [ -n "${2:-}" ]; then
+  case "$event" in
+    FOLDER_*) context="{\"folderId\":$2}" ;;
+    USER_*)   context="{\"userId\":$2}" ;;
+    *)        context="{\"assetId\":$2}" ;;
+  esac
+fi
+curl -fsS -X POST http://netx-mock:3000/api/webhooks/trigger \
+  -H 'Authorization: apiToken dev-token-1234' \
+  -H 'Content-Type: application/json' \
+  -d "{\"event\":\"$event\",\"context\":$context}"
+echo

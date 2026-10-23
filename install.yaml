@@ -1,0 +1,14 @@
+name: netx-mock
+
+project_files:
+  - docker-compose.netx-mock.yaml
+  - commands/web/netx-mock-seed
+  - commands/web/netx-mock-trigger
+  - netx-mock/seed.php
+
+ddev_version_constraint: '>= v1.24.0'
+
+post_install_actions:
+  - |
+    #ddev-description:Tell the user what to do next
+    echo "NetX mock added. Run 'ddev restart', then 'ddev netx-mock-seed' once netx_dam is enabled."

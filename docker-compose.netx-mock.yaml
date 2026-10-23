@@ -1,0 +1,29 @@
+#ddev-generated
+# NetX mock API for local development. See https://github.com/pingevt/netx-mock-api
+#
+# Reach it:
+#   from the web container (what the netx_dam module uses): http://netx-mock:3000
+#   from your browser:  https://${DDEV_HOSTNAME}:3031  (http on 3030)
+services:
+  netx-mock:
+    container_name: ddev-${DDEV_SITENAME}-netx-mock
+    image: ${NETX_MOCK_IMAGE:-ghcr.io/pingevt/netx-mock-api:latest}
+    restart: "no"
+    labels:
+      com.ddev.site-name: ${DDEV_SITENAME}
+      com.ddev.approot: ${DDEV_APPROOT}
+    expose:
+      - "3000"
+    environment:
+      - VIRTUAL_HOST=${DDEV_HOSTNAME}
+      - HTTP_EXPOSE=3030:3000
+      - HTTPS_EXPOSE=3031:3000
+      # The seed webhook subscription posts to the web container. The source id
+      # must match the one created by `ddev netx-mock-seed` (default: mock).
+      - WEBHOOK_URL=http://web/netx-dam/webhook/${NETX_MOCK_SOURCE_ID:-mock}
+      - WEBHOOK_SECRET=dev-webhook-secret
+    volumes:
+      - netx-mock-data:/data
+      - ".:/mnt/ddev_config:ro"
+volumes:
+  netx-mock-data:
