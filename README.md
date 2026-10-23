@@ -69,8 +69,11 @@ ddev add-on remove netx-mock
 - The mock's seed webhook subscription posts to `http://web/...` inside ddev's network. Real NetX requires HTTPS, so that is one place the mock is more lenient.
 - Tested on ddev 1.25.2 against a fresh Drupal 11.4 site with `netx_dam` from `main`.
 
+## License
+
+MIT, see [LICENSE](LICENSE).
+
 ## To do
 
 - Add the add-on test suite (bats) and a GitHub Actions workflow.
-- Pick a license.
 - Add the `ddev-get` topic once published.
